@@ -1,0 +1,39 @@
+services:
+  frontend:
+    container_name: sbna-frontend
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    env_file:
+      - ./frontend/.env
+    restart: always
+
+  backend:
+    container_name: sbna-backend
+    build:
+      context: ./backend
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./backend/.env
+    restart: always
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8
+    container_name: sbna-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sbna
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

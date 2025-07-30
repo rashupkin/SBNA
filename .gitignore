@@ -1,0 +1,19 @@
+# General rules
+node_modules/
+dist/
+.env
+*.log
+
+# Backend
+/backend/node_modules/
+/backend/dist/
+/backend/prisma/dev.db
+/backend/prisma/*.db-journal
+
+# Frontend
+/frontend/node_modules/
+/frontend/.next/
+/frontend/dist/
+
+# Docker
+mysql_data/
