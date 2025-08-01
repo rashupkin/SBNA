@@ -71,6 +71,17 @@ export class PostsService {
     }
   }
 
+  async put(id: string, createPostDto: CreatePostDto) {
+    try {
+      await prisma.post.update({
+        where: { id },
+        data: createPostDto,
+      });
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async search(req: string) {
     try {
       return await prisma.post.findMany({

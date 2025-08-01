@@ -1,1 +1,1 @@
-export type TRequestMethods = "POST" | "GET" | "DELETE" | "PATCH";
+export type TRequestMethods = "POST" | "GET" | "DELETE" | "PATCH" | "PUT";

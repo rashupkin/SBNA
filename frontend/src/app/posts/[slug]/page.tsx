@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { CommentsList } from "@/components/ui/CommentList";
+import { EditorButton } from "@/components/ui/EditorButton";
 
 export default function PostPage() {
   const { slug } = useParams() as { slug: string };
@@ -42,6 +43,7 @@ export default function PostPage() {
 
   return (
     <div className="max-w-3xl mx-auto py-16 px-6">
+      <EditorButton />
       <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
 
       <div className="text-sm text-muted-foreground mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">

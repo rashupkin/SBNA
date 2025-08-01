@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   Req,
   UseGuards,
@@ -42,6 +43,18 @@ export class PostsController {
   @Get(':id')
   async getById(@Param('id') id: string) {
     return await this.postsService.getById(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put(':id')
+  async put(
+    @Req() req,
+    @Param('id') id: string,
+    @Body() createPostDto: CreatePostDto,
+  ) {
+    createPostDto.userId = req.user.id;
+
+    await this.postsService.put(id, createPostDto);
   }
 
   // comments
