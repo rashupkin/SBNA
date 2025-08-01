@@ -30,14 +30,16 @@ export class PostsController {
     await this.postsService.create(createPostDto);
   }
 
-  @Get('search')
-  async search(@Query('req') req: string) {
-    return this.postsService.search(req);
-  }
-
   @Get()
-  async getAll() {
-    return await this.postsService.getAll();
+  async getAll(
+    @Query('search') search?: string,
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '5',
+  ) {
+    const take = parseInt(limit);
+    const skip = (parseInt(page) - 1) * take;
+
+    return await this.postsService.getAll({ search, skip, take });
   }
 
   @Get(':id')

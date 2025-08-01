@@ -26,7 +26,7 @@ export const PostsList: FC<IPostsList> = ({
 }) => {
   const router = useRouter();
 
-  const deletePost = async (postId: string) => {
+  const handleDelete = async (postId: string) => {
     await request({
       method: "DELETE",
       url: `/posts/${postId}`,
@@ -43,7 +43,7 @@ export const PostsList: FC<IPostsList> = ({
       });
   };
 
-  const editPost = async (postId: string) => {
+  const handleEdit = async (postId: string) => {
     router.replace(`/posts/${postId}/editor`);
   };
 
@@ -60,10 +60,10 @@ export const PostsList: FC<IPostsList> = ({
                 <MoreVertical size={"20"} className="absolute right-5" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => editPost(post.id)}>
+                <DropdownMenuItem onClick={() => handleEdit(post.id)}>
                   Edit
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => deletePost(post.id)}>
+                <DropdownMenuItem onClick={() => handleDelete(post.id)}>
                   Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>

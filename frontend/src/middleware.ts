@@ -10,5 +10,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/editor", "/profile"],
+  matcher: ["/editor", "/profile", "/posts/:postId/editor"],
 };

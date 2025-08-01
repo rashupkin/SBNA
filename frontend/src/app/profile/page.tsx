@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 export default function ProfilePage() {
   const [profile, setProfile] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [showSkeleton, setShowSkeleton] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -17,18 +16,12 @@ export default function ProfilePage() {
       });
 
       setProfile(res?.data);
-      setIsLoading(false);
 
-      setTimeout(() => setShowSkeleton(false), 300);
+      setTimeout(() => setIsLoading(false), 300);
     })();
   }, []);
 
   return (
-    <Profile
-      profile={profile}
-      isLoading={isLoading}
-      showSkeleton={showSkeleton}
-      isVisibleButton={true}
-    />
+    <Profile profile={profile} isLoading={isLoading} isVisibleButton={true} />
   );
 }

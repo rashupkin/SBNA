@@ -1,5 +1,6 @@
 "use client";
 
+import { EditorButton } from "@/components/ui/EditorButton";
 import { Profile } from "@/components/ui/Profile";
 import { IUser } from "@/types/IUser";
 import { request } from "@/utils/request";
@@ -11,7 +12,6 @@ export default function ProfilePage() {
 
   const [profile, setProfile] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [showSkeleton, setShowSkeleton] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -20,17 +20,15 @@ export default function ProfilePage() {
       });
 
       setProfile(res?.data);
-      setIsLoading(false);
 
-      setTimeout(() => setShowSkeleton(false), 300);
+      setTimeout(() => setIsLoading(false), 300);
     })();
   }, []);
 
   return (
-    <Profile
-      profile={profile}
-      isLoading={isLoading}
-      showSkeleton={showSkeleton}
-    />
+    <div>
+      <EditorButton />
+      <Profile profile={profile} isLoading={isLoading} />
+    </div>
   );
 }

@@ -14,13 +14,14 @@ Backend blog-platform SBNA based on NestJS
 ### Posts
 
 - POST /api/posts - create new post
-- GET /api/posts - get list of posts
+- GET /api/posts?search={search}&page={page}&limit={limit} - get list of posts by search, page
 - GET /api/posts/:id - get post by ID
 - POST /api/posts/:id/comments - create comment for post by ID
 
 ### Users
 
 - GET /api/users/me - get yourself profile
+- GET /api/users/:username - get user by his username
 
 ---
 

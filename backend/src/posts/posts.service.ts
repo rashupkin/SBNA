@@ -21,17 +21,43 @@ export class PostsService {
     }
   }
 
-  async getAll() {
+  async getAll({
+    search,
+    skip,
+    take,
+  }: {
+    search?: string;
+    skip: number;
+    take: number;
+  }) {
     try {
-      const posts = await prisma.post.findMany({});
+      const posts = await prisma.post.findMany({
+        where: search
+          ? {
+              title: {
+                contains: search,
+              },
+            }
+          : undefined,
+        take,
+        skip,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              username: true,
+              email: true,
+            },
+          },
+        },
+      });
 
-      const authors = await Promise.all(
-        posts.map((post) => this.usersService.getById(post.userId)),
-      );
-
-      return posts.map((post, idx) => ({
+      return posts.map(({ user, ...post }) => ({
         ...post,
-        author: authors[idx],
+        author: user,
       }));
     } catch (err) {
       throw err;
@@ -76,20 +102,6 @@ export class PostsService {
       await prisma.post.update({
         where: { id },
         data: createPostDto,
-      });
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  async search(req: string) {
-    try {
-      return await prisma.post.findMany({
-        where: {
-          title: {
-            contains: req,
-          },
-        },
       });
     } catch (err) {
       throw err;
