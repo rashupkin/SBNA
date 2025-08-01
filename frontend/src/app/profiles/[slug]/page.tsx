@@ -3,9 +3,12 @@
 import { Profile } from "@/components/ui/Profile";
 import { IUser } from "@/types/IUser";
 import { request } from "@/utils/request";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ProfilePage() {
+  const { slug } = useParams() as { slug: string };
+
   const [profile, setProfile] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showSkeleton, setShowSkeleton] = useState(true);
@@ -13,7 +16,7 @@ export default function ProfilePage() {
   useEffect(() => {
     (async () => {
       const res = await request({
-        url: "/users/me",
+        url: `/users/${slug}`,
       });
 
       setProfile(res?.data);
@@ -28,7 +31,6 @@ export default function ProfilePage() {
       profile={profile}
       isLoading={isLoading}
       showSkeleton={showSkeleton}
-      isVisibleButton={true}
     />
   );
 }

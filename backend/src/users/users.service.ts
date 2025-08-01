@@ -15,6 +15,29 @@ export class UsersService {
     }
   }
 
+  async getByUsename(username: string) {
+    try {
+      const user = await prisma.user.findUniqueOrThrow({
+        where: {
+          username,
+        },
+      });
+
+      const userPosts = await prisma.post.findMany({
+        where: {
+          userId: user.id,
+        },
+      });
+
+      return {
+        ...user,
+        posts: userPosts,
+      };
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async getMe(id: number) {
     try {
       const user = await this.getById(id);

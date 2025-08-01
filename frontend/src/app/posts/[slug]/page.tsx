@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { CommentsList } from "@/components/ui/CommentList";
 import { EditorButton } from "@/components/ui/EditorButton";
+import Link from "next/link";
 
 export default function PostPage() {
   const { slug } = useParams() as { slug: string };
@@ -48,7 +49,13 @@ export default function PostPage() {
 
       <div className="text-sm text-muted-foreground mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <span>
-          Author: <span className="font-medium">{post.author.username}</span>
+          Author:{" "}
+          <Link
+            href={`/profiles/${post.author.username}`}
+            className="font-medium"
+          >
+            {post.author.username}
+          </Link>
         </span>
         <span>
           Created: {format(new Date(post.createdAt), "dd.MM.yyyy")} | Updated:{" "}

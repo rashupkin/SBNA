@@ -34,15 +34,15 @@ export default function EditorPostPage() {
       router.replace(`/posts/${slug}`);
   };
 
-  return (
-    postData && (
-      <div className="max-w-5xl mx-auto pt-10">
-        <EditorForm
-          onSubmit={onSubmit}
-          title={postData?.title}
-          description={postData?.description}
-        />
-      </div>
-    )
+  return postData ? (
+    <div className="max-w-5xl mx-auto pt-10">
+      <EditorForm
+        onSubmit={onSubmit}
+        title={postData?.title}
+        description={postData?.description}
+      />
+    </div>
+  ) : (
+    <div className="text-center py-10 text-muted-foreground">Loading...</div>
   );
 }

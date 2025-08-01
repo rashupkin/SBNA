@@ -11,6 +11,7 @@ import {
 import { MoreVertical } from "lucide-react";
 import { request } from "@/utils/request";
 import { IUser } from "@/types/IUser";
+import { useRouter } from "next/navigation";
 
 interface IPostsList {
   posts: IPost[];
@@ -23,6 +24,8 @@ export const PostsList: FC<IPostsList> = ({
   isVisibleButton = false,
   setProfile,
 }) => {
+  const router = useRouter();
+
   const deletePost = async (postId: string) => {
     await request({
       method: "DELETE",
@@ -40,6 +43,10 @@ export const PostsList: FC<IPostsList> = ({
       });
   };
 
+  const editPost = async (postId: string) => {
+    router.replace(`/posts/${postId}/editor`);
+  };
+
   return (
     <ul className="grid gap-8">
       {posts.map((post) => (
@@ -53,6 +60,9 @@ export const PostsList: FC<IPostsList> = ({
                 <MoreVertical size={"20"} className="absolute right-5" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => editPost(post.id)}>
+                  Edit
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => deletePost(post.id)}>
                   Delete
                 </DropdownMenuItem>
@@ -60,7 +70,7 @@ export const PostsList: FC<IPostsList> = ({
             </DropdownMenu>
           )}
 
-          <Link href={`posts/${post.id}`}>
+          <Link href={`/posts/${post.id}`}>
             <CardContent className="p-6 space-y-2">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white truncate">
                 {post.title}

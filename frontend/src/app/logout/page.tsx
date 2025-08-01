@@ -28,7 +28,7 @@ export default function LogoutPage() {
 
   return (
     <div className="flex justify-center items-center h-screen text-lg text-muted-foreground">
-      Выход из аккаунта...
+      Exiting from account...
     </div>
   );
 }
