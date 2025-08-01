@@ -1,6 +1,6 @@
 "use client";
 
-import { CommentForm } from "@/components/shared/CommentForm";
+import { CommentForm } from "@/components/forms/CommentForm";
 import { IComment } from "@/types/IComment";
 import { IPost } from "@/types/IPost";
 import { request } from "@/utils/request";

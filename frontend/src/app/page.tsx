@@ -6,9 +6,12 @@ import { SkeletonPostCard } from "@/components/ui/SkeeletonPostCard";
 import { cn } from "@/lib/utils";
 import { IPost } from "@/types/IPost";
 import { request } from "@/utils/request";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function BlogHomePage() {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") || "";
   const [posts, setPosts] = useState<IPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showSkeleton, setShowSkeleton] = useState(true);
@@ -16,7 +19,7 @@ export default function BlogHomePage() {
   useEffect(() => {
     (async () => {
       const res = await request({
-        url: "/posts",
+        url: `/posts${search ? `/search?req=${search}` : ""}`,
       });
 
       setPosts(res.data ?? []);
@@ -24,7 +27,7 @@ export default function BlogHomePage() {
 
       setTimeout(() => setShowSkeleton(false), 300);
     })();
-  }, []);
+  }, [search]);
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-black py-10 px-4">

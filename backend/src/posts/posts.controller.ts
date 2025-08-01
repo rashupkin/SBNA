@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -26,6 +27,11 @@ export class PostsController {
     createPostDto.userId = req.user.id;
 
     await this.postsService.create(createPostDto);
+  }
+
+  @Get('search')
+  async search(@Query('req') req: string) {
+    return this.postsService.search(req);
   }
 
   @Get()

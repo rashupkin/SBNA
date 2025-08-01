@@ -70,4 +70,18 @@ export class PostsService {
       throw err;
     }
   }
+
+  async search(req: string) {
+    try {
+      return await prisma.post.findMany({
+        where: {
+          title: {
+            contains: req,
+          },
+        },
+      });
+    } catch (err) {
+      throw err;
+    }
+  }
 }
