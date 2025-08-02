@@ -6,16 +6,23 @@ import { IPost } from "@/types/IPost";
 import { request } from "@/utils/request";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { CommentsList } from "@/components/ui/CommentList";
 import { EditorButton } from "@/components/ui/EditorButton";
 import Link from "next/link";
+import { AxiosError, HttpStatusCode } from "axios";
+import { pages } from "@/constants/pages";
+import { Loader2 } from "lucide-react";
+import { Loader } from "@/components/ui/Loader";
 
 export default function PostPage() {
   const { slug } = useParams() as { slug: string };
+
   const [post, setPost] = useState<IPost | null>(null);
   const [comments, setComments] = useState<IComment[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -28,8 +35,12 @@ export default function PostPage() {
 
         setPost(res?.data);
         setComments(res?.data.comments || []);
-      } catch (err) {
-        console.error("Failed to fetch post:", err);
+      } catch (error) {
+        const err = error as AxiosError;
+
+        if (err.status === HttpStatusCode.NotFound) {
+          return router.push(pages.notFound);
+        }
       } finally {
         setLoading(false);
       }
@@ -37,9 +48,7 @@ export default function PostPage() {
   }, [slug]);
 
   if (loading || !post) {
-    return (
-      <div className="text-center py-10 text-muted-foreground">Loading...</div>
-    );
+    return <Loader />;
   }
 
   return (

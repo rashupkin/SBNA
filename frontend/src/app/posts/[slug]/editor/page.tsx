@@ -1,25 +1,37 @@
 "use client";
 
 import { EditorForm, editorSchema } from "@/components/forms/EditorForm";
+import { Loader } from "@/components/ui/Loader";
+import { pages } from "@/constants/pages";
 import { IPost } from "@/types/IPost";
 import { request } from "@/utils/request";
-import axios from "axios";
+import axios, { AxiosError, HttpStatusCode } from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import z from "zod";
 
 export default function EditorPostPage() {
   const { slug } = useParams() as { slug: string };
+
   const [postData, setPostData] = useState<IPost | null>(null);
+
   const router = useRouter();
 
   useEffect(() => {
     (async () => {
-      const res = await request({
-        url: `/posts/${slug}`,
-      });
+      try {
+        const res = await request({
+          url: `/posts/${slug}`,
+        });
 
-      setPostData(res.data);
+        setPostData(res.data);
+      } catch (error) {
+        const err = error as AxiosError;
+
+        if (err.status === HttpStatusCode.NotFound) {
+          return router.push(pages.notFound);
+        }
+      }
     })();
   }, []);
 
@@ -43,6 +55,6 @@ export default function EditorPostPage() {
       />
     </div>
   ) : (
-    <div className="text-center py-10 text-muted-foreground">Loading...</div>
+    <Loader />
   );
 }

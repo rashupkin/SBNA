@@ -11,8 +11,9 @@ Frontend blog-platform SBNA based on Next.js.
 - `/sign-up` — registration
 - `/sign-in` — authorization
 - `/posts/{postId}` — post with comments
-- `/posts/{postId}/editor` - page of editing post
-- `/profiles/{username}` - user profile page
+- `/posts/{postId}/editor` - editing post
+- `/profiles/{username}` - user profile
+- `/not-found` - not found
 
 ---
 

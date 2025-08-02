@@ -2,9 +2,11 @@
 
 import { EditorButton } from "@/components/ui/EditorButton";
 import { Profile } from "@/components/ui/Profile";
+import { pages } from "@/constants/pages";
 import { IUser } from "@/types/IUser";
 import { request } from "@/utils/request";
-import { useParams } from "next/navigation";
+import { AxiosError, HttpStatusCode } from "axios";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ProfilePage() {
@@ -13,15 +15,25 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const router = useRouter();
+
   useEffect(() => {
     (async () => {
-      const res = await request({
-        url: `/users/${slug}`,
-      });
+      try {
+        const res = await request({
+          url: `/users/${slug}`,
+        });
 
-      setProfile(res?.data);
+        setProfile(res?.data);
 
-      setTimeout(() => setIsLoading(false), 300);
+        setTimeout(() => setIsLoading(false), 300);
+      } catch (error) {
+        const err = error as AxiosError;
+
+        if (err.status === HttpStatusCode.NotFound) {
+          return router.push(pages.notFound);
+        }
+      }
     })();
   }, []);
 

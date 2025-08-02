@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dtos/createPost.dto';
 import { UsersService } from '../users/users.service';
 import { CommentsService } from '../comments/comments.service';
 import { prisma } from '../../prisma/client';
+import { EDbErrors } from '../constants/EDbErrors';
 
 @Injectable()
 export class PostsService {
@@ -93,6 +94,10 @@ export class PostsService {
         comments: commentsWithAuthors,
       };
     } catch (err) {
+      if (err.code === EDbErrors.NOT_FOUND) {
+        throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+      }
+
       throw err;
     }
   }

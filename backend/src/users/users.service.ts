@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { prisma } from '../../prisma/client';
+import { EDbErrors } from '../constants/EDbErrors';
 
 @Injectable()
 export class UsersService {
@@ -34,6 +35,10 @@ export class UsersService {
         posts: userPosts,
       };
     } catch (err) {
+      if (err.code === EDbErrors.NOT_FOUND) {
+        throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+      }
+
       throw err;
     }
   }

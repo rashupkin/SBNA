@@ -5,6 +5,7 @@ class Page {
   editor = "/editor";
   profile = "/profile";
   logout = "/logout";
+  notFound = "/not-found";
 }
 
 export const pages = new Page();
